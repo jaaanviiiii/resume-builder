@@ -143,3 +143,4 @@ const EducationForm = ({ education = [], onChange }) => {
 };
 
 export default EducationForm;
+

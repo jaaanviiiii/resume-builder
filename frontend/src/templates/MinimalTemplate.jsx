@@ -143,3 +143,4 @@ const MinimalTemplate = ({ data }) => {
 };
 
 export default MinimalTemplate;
+

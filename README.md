@@ -1,3 +1,4 @@
+
 # ResumeForge – Smart Resume Builder
 > **Full-Stack MERN Application for University Mini Project (Experiment 10)**
 
@@ -364,3 +365,4 @@ cd <project-folder>
 
 ## 📜 License
 This project is open-source under the MIT License and developed as an academic university submission.
+

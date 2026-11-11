@@ -119,3 +119,4 @@ const SkillsForm = ({ skills = [], onChange }) => {
 };
 
 export default SkillsForm;
+

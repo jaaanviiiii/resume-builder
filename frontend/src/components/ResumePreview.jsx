@@ -34,3 +34,4 @@ const ResumePreview = ({ resumeData }) => {
 };
 
 export default ResumePreview;
+

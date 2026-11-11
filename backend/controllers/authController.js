@@ -91,7 +91,7 @@ const loginUser = async (req, res) => {
     }
 
     // Check for existing user
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -134,3 +134,4 @@ module.exports = {
   registerUser,
   loginUser,
 };
+

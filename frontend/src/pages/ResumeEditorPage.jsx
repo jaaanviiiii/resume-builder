@@ -490,3 +490,4 @@ const ResumeEditorPage = () => {
 };
 
 export default ResumeEditorPage;
+

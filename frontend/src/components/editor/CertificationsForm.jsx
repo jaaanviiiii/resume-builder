@@ -107,3 +107,4 @@ const CertificationsForm = ({ certifications = [], onChange }) => {
 };
 
 export default CertificationsForm;
+
