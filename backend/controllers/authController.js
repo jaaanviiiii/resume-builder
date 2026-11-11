@@ -1,8 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/User');
+const { readData, writeData } = require('../config/localStore');
 
-// Helper function to generate JWT token
+// Helper function to generate JWT token (Experiment 7)
 const generateToken = (userId, email) => {
   return jwt.sign(
     { userId, email },
@@ -33,8 +35,18 @@ const registerUser = async (req, res) => {
       });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+    const isDbConnected = mongoose.connection.readyState === 1;
+
     // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    let existingUser = null;
+    if (isDbConnected) {
+      existingUser = await User.findOne({ email: cleanEmail });
+    } else {
+      const store = readData();
+      existingUser = store.users.find((u) => u.email === cleanEmail);
+    }
+
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -42,19 +54,34 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Hash the password using bcryptjs
+    // Hash the password using bcryptjs (Experiment 7)
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Create the new user
-    const newUser = await User.create({
-      name: name.trim(),
-      email: email.toLowerCase().trim(),
-      password: hashedPassword,
-    });
+    let newUser;
+    if (isDbConnected) {
+      newUser = await User.create({
+        name: name.trim(),
+        email: cleanEmail,
+        password: hashedPassword,
+      });
+    } else {
+      const store = readData();
+      newUser = {
+        _id: 'user_' + Date.now(),
+        name: name.trim(),
+        email: cleanEmail,
+        password: hashedPassword,
+        createdAt: new Date().toISOString(),
+      };
+      store.users.push(newUser);
+      writeData(store);
+      console.log(`[Local Mode] User ${newUser.email} registered successfully.`);
+    }
 
     // Generate JWT token
-    const token = generateToken(newUser._id, newUser.email);
+    const token = generateToken(newUser._id.toString(), newUser.email);
 
     res.status(201).json({
       success: true,
@@ -70,7 +97,7 @@ const registerUser = async (req, res) => {
     console.error('Registration error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error during registration. Please try again.',
+      message: 'Server error during registration: ' + error.message,
     });
   }
 };
@@ -90,8 +117,18 @@ const loginUser = async (req, res) => {
       });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+    const isDbConnected = mongoose.connection.readyState === 1;
+
     // Check for existing user
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    let user = null;
+    if (isDbConnected) {
+      user = await User.findOne({ email: cleanEmail });
+    } else {
+      const store = readData();
+      user = store.users.find((u) => u.email === cleanEmail);
+    }
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -99,7 +136,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Compare passwords
+    // Compare passwords using bcryptjs (Experiment 7)
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -109,7 +146,7 @@ const loginUser = async (req, res) => {
     }
 
     // Generate token
-    const token = generateToken(user._id, user.email);
+    const token = generateToken(user._id.toString(), user.email);
 
     res.status(200).json({
       success: true,
@@ -125,7 +162,7 @@ const loginUser = async (req, res) => {
     console.error('Login error:', error.message);
     res.status(500).json({
       success: false,
-      message: 'Server error during login. Please try again.',
+      message: 'Server error during login: ' + error.message,
     });
   }
 };
@@ -134,4 +171,3 @@ module.exports = {
   registerUser,
   loginUser,
 };
-
