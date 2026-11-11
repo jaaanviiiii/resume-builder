@@ -24,7 +24,23 @@ const PersonalInfoForm = ({ personalInfo, onChange }) => {
               type="text"
               value={personalInfo.fullName || ''}
               onChange={(e) => handleChange('fullName', e.target.value)}
-              placeholder="e.g. Alex Johnson"
+              placeholder="e.g. Janvi Soni"
+              className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+            Job Title / Target Role
+          </label>
+          <div className="relative">
+            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <input
+              type="text"
+              value={personalInfo.role || ''}
+              onChange={(e) => handleChange('role', e.target.value)}
+              placeholder="e.g. Software Engineer"
               className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800"
             />
           </div>

@@ -20,6 +20,11 @@ const ModernTemplate = ({ data }) => {
         <h1 className="text-3xl font-display font-extrabold text-slate-900 tracking-tight">
           {personalInfo.fullName || 'Your Full Name'}
         </h1>
+        {personalInfo.role && (
+          <p className="text-sm font-bold text-brand-700 mt-0.5">
+            {personalInfo.role}
+          </p>
+        )}
         {personalInfo.summary && (
           <p className="mt-2 text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">
             {personalInfo.summary}

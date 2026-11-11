@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import html2pdf from 'html2pdf.js';
 import { api } from '../services/api';
@@ -29,7 +29,6 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-// Default initial state for a new student resume
 const initialResumeState = {
   resumeTitle: 'My Resume',
   selectedTemplate: 'modern',
@@ -49,20 +48,19 @@ const initialResumeState = {
   certifications: [],
 };
 
-// Resume Editor Page (Experiments 1, 2, 3, 4, 8 & 9)
+// Resume Editor Page Component (Experiments 1, 2, 3, 4, 8 & 9)
 const ResumeEditorPage = () => {
-  const { id } = useParams(); // Experiment 3 - Dynamic Route Parameters
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [resumeData, setResumeData] = useState(initialResumeState);
   const [activeTab, setActiveTab] = useState('personal');
-  const [mobileView, setMobileView] = useState('editor'); // 'editor' | 'preview'
+  const [mobileView, setMobileView] = useState('editor');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [notification, setNotification] = useState(null);
 
-  // If editing an existing resume, load it on mount (Experiment 2 & 9)
   useEffect(() => {
     if (id) {
       const loadResume = async () => {
@@ -80,23 +78,22 @@ const ResumeEditorPage = () => {
       };
       loadResume();
     } else {
-      // Pre-fill with a sample student template so user can see immediate structure
       setResumeData({
-        resumeTitle: 'Full-Stack Developer Resume',
+        resumeTitle: 'Software Engineer Resume',
         selectedTemplate: 'modern',
         personalInfo: {
-          fullName: 'Aryan Verma',
-          email: 'aryan.verma@example.com',
-          phone: '+91 98765 43210',
-          location: 'Bangalore, Karnataka',
+          fullName: 'Janvi Soni',
+          email: 'janvi@gmail.com',
+          phone: '+91 9876543210',
+          location: 'Chandigarh, India',
           summary:
-            'Passionate Computer Science student with a strong foundation in MERN stack web development, algorithmic problem-solving, and database management.',
-          linkedin: 'linkedin.com/in/aryanverma',
-          github: 'github.com/aryanverma',
+            'Passionate Software Engineering undergraduate with hands-on experience in MERN stack web development, algorithmic problem-solving, and database management.',
+          linkedin: 'linkedin.com/in/janvisoni',
+          github: 'github.com/janvisoni',
         },
         education: [
           {
-            college: 'Institute of Engineering & Technology',
+            college: 'Punjab Technical University',
             degree: 'B.Tech',
             course: 'Computer Science',
             startYear: '2022',
@@ -104,18 +101,18 @@ const ResumeEditorPage = () => {
             grade: '8.8 CGPA',
           },
         ],
-        skills: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JavaScript', 'Tailwind CSS', 'Git & GitHub'],
+        skills: ['Java', 'React', 'SQL', 'Git', 'DSA', 'Tailwind CSS', 'Node.js'],
         projects: [
           {
-            title: 'ResumeForge – SaaS Resume Builder',
+            title: 'ResumeBuilder Web Platform',
             technologies: 'React, Vite, Express, MongoDB',
             description: 'Created a full-featured resume application featuring live A4 rendering, multi-template switching, and JWT authentication.',
-            link: 'github.com/aryan/resumeforge',
+            link: 'github.com/janvi/resumebuilder',
           },
         ],
         experience: [
           {
-            company: 'CodeTech Solutions',
+            company: 'Innovatech Labs',
             role: 'Software Development Intern',
             duration: 'Jun 2025 – Aug 2025',
             description: 'Developed responsive frontend modules using React and assisted in writing RESTful microservices with Node.js.',
@@ -123,8 +120,8 @@ const ResumeEditorPage = () => {
         ],
         certifications: [
           {
-            name: 'MERN Stack Web Development Certification',
-            organization: 'Coursera / IIT Academy',
+            name: 'MERN Stack Web Development',
+            organization: 'Coursera',
             year: '2025',
           },
         ],
@@ -132,7 +129,6 @@ const ResumeEditorPage = () => {
     }
   }, [id]);
 
-  // Temporary notification alert helper
   const showNotification = (type, message) => {
     setNotification({ type, message });
     setTimeout(() => {
@@ -140,16 +136,13 @@ const ResumeEditorPage = () => {
     }, 4000);
   };
 
-  // Save or update resume to backend MongoDB (Experiment 8 & 9)
   const handleSave = async () => {
     try {
       setSaving(true);
       if (id) {
-        // Update existing resume (PUT /api/resumes/:id)
         await api.updateResume(id, resumeData);
         showNotification('success', 'Resume updated successfully in MongoDB!');
       } else {
-        // Create new resume (POST /api/resumes)
         const response = await api.createResume(resumeData);
         showNotification('success', 'Resume created and saved successfully!');
         if (response.data?._id) {
@@ -163,7 +156,6 @@ const ResumeEditorPage = () => {
     }
   };
 
-  // Download PDF using html2pdf.js (A4 Print Standard)
   const handleDownloadPDF = async () => {
     const element = document.getElementById('resume-preview-sheet');
     if (!element) {
@@ -173,7 +165,6 @@ const ResumeEditorPage = () => {
 
     try {
       setDownloading(true);
-
       const filename = `${resumeData.personalInfo?.fullName || resumeData.resumeTitle || 'Resume'}.pdf`;
 
       const opt = {
@@ -203,7 +194,6 @@ const ResumeEditorPage = () => {
     }
   };
 
-  // Section Tabs configuration
   const tabs = [
     { id: 'personal', name: 'Personal', icon: User },
     { id: 'education', name: 'Education', icon: GraduationCap },
@@ -215,27 +205,27 @@ const ResumeEditorPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#faf8ff]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
-          <p className="text-sm font-medium text-slate-600">Loading resume details...</p>
+          <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-700 rounded-full animate-spin"></div>
+          <p className="text-sm font-semibold text-slate-600">Loading resume details...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-100">
+    <div className="min-h-screen flex flex-col bg-[#faf8ff]">
       <Navbar />
 
       {/* Editor Control Toolbar */}
-      <div className="bg-white border-b border-slate-200 sticky top-16 z-30 px-4 sm:px-6 lg:px-8 py-3">
+      <div className="bg-white/80 backdrop-blur-md border-b border-purple-100 sticky top-20 z-30 px-4 sm:px-6 lg:px-8 py-3">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Left: Back & Title Edit */}
           <div className="flex items-center gap-3">
             <Link
               to="/dashboard"
-              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+              className="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-brand-50 transition-colors"
               title="Back to Dashboard"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -247,22 +237,21 @@ const ResumeEditorPage = () => {
                 value={resumeData.resumeTitle || ''}
                 onChange={(e) => setResumeData({ ...resumeData, resumeTitle: e.target.value })}
                 placeholder="Resume Title..."
-                className="text-base sm:text-lg font-display font-bold text-slate-900 border-b border-transparent hover:border-slate-300 focus:border-brand-500 focus:outline-none bg-transparent transition-all px-1 py-0.5"
+                className="text-base sm:text-lg font-display font-extrabold text-slate-900 border-b border-transparent hover:border-slate-300 focus:border-brand-600 focus:outline-none bg-transparent transition-all px-1 py-0.5"
               />
               <span className="text-[11px] text-slate-400 block px-1">
-                Template: <strong className="capitalize text-brand-600">{resumeData.selectedTemplate}</strong>
+                Template: <strong className="capitalize text-brand-700">{resumeData.selectedTemplate}</strong>
               </span>
             </div>
           </div>
 
-          {/* Right: Mobile Toggle + Actions */}
+          {/* Right: Actions */}
           <div className="flex items-center gap-2.5">
-            {/* Mobile View Switcher (Visible on small screens) */}
-            <div className="flex sm:hidden p-1 bg-slate-100 rounded-lg border border-slate-200">
+            <div className="flex sm:hidden p-1 bg-brand-50 rounded-lg border border-purple-100">
               <button
                 onClick={() => setMobileView('editor')}
-                className={`px-3 py-1 text-xs font-semibold rounded-md ${
-                  mobileView === 'editor' ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-600'
+                className={`px-3 py-1 text-xs font-bold rounded-md ${
+                  mobileView === 'editor' ? 'bg-white text-brand-700 shadow-xs' : 'text-slate-600'
                 }`}
               >
                 <Edit className="w-3.5 h-3.5 inline mr-1" />
@@ -270,8 +259,8 @@ const ResumeEditorPage = () => {
               </button>
               <button
                 onClick={() => setMobileView('preview')}
-                className={`px-3 py-1 text-xs font-semibold rounded-md ${
-                  mobileView === 'preview' ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-600'
+                className={`px-3 py-1 text-xs font-bold rounded-md ${
+                  mobileView === 'preview' ? 'bg-white text-brand-700 shadow-xs' : 'text-slate-600'
                 }`}
               >
                 <Eye className="w-3.5 h-3.5 inline mr-1" />
@@ -283,7 +272,7 @@ const ResumeEditorPage = () => {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-xl transition-all shadow-sm disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 px-5 py-2 text-xs sm:text-sm font-bold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-full transition-all shadow-xs disabled:opacity-60"
             >
               <Save className="w-4 h-4" />
               <span>{saving ? 'Saving...' : 'Save'}</span>
@@ -293,7 +282,7 @@ const ResumeEditorPage = () => {
             <button
               onClick={handleDownloadPDF}
               disabled={downloading}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-sm hover:shadow transition-all disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 px-6 py-2 text-xs sm:text-sm font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-full shadow-md shadow-brand-700/20 transition-all disabled:opacity-60"
             >
               {downloading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -306,11 +295,11 @@ const ResumeEditorPage = () => {
         </div>
       </div>
 
-      {/* Floating Notification Toast */}
+      {/* Floating Notification */}
       {notification && (
         <div className="fixed bottom-6 right-6 z-50 animate-bounce">
           <div
-            className={`px-4 py-3 rounded-xl shadow-xl flex items-center gap-2.5 text-xs font-semibold text-white ${
+            className={`px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-bold text-white ${
               notification.type === 'error' ? 'bg-red-600' : 'bg-emerald-600'
             }`}
           >
@@ -324,19 +313,19 @@ const ResumeEditorPage = () => {
         </div>
       )}
 
-      {/* Main Split Layout: Form on Left, Live Preview on Right */}
+      {/* Main Split Layout */}
       <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Form Sections (Hidden on mobile if preview selected) */}
+          {/* Left Column: Form */}
           <div
             className={`lg:col-span-6 space-y-6 ${
               mobileView === 'preview' ? 'hidden lg:block' : 'block'
             }`}
           >
             {/* Template Selector Card */}
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-soft">
+            <div className="bg-white p-5 rounded-3xl border border-purple-100 shadow-soft">
               <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">
-                1. Choose Resume Template
+                1. Choose Template
               </h3>
               <TemplateSelector
                 selectedTemplate={resumeData.selectedTemplate}
@@ -347,9 +336,8 @@ const ResumeEditorPage = () => {
             </div>
 
             {/* Section Form Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-soft overflow-hidden">
-              {/* Section Navigation Tabs */}
-              <div className="border-b border-slate-200 bg-slate-50/70 p-2 overflow-x-auto flex gap-1">
+            <div className="bg-white rounded-3xl border border-purple-100 shadow-soft overflow-hidden">
+              <div className="border-b border-purple-100/80 bg-brand-50/50 p-2 overflow-x-auto flex gap-1">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -358,10 +346,10 @@ const ResumeEditorPage = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                         isActive
-                          ? 'bg-white text-brand-700 shadow-sm border border-slate-200/80'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          ? 'bg-white text-brand-700 shadow-xs border border-purple-100'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-brand-50'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5 text-brand-600" />
@@ -371,7 +359,6 @@ const ResumeEditorPage = () => {
                 })}
               </div>
 
-              {/* Active Tab Form Body */}
               <div className="p-6">
                 {activeTab === 'personal' && (
                   <div>
@@ -460,25 +447,24 @@ const ResumeEditorPage = () => {
             </div>
           </div>
 
-          {/* Right Column: Live A4 Preview (Sticky on Desktop) */}
+          {/* Right Column: Live A4 Preview */}
           <div
-            className={`lg:col-span-6 sticky top-36 ${
+            className={`lg:col-span-6 sticky top-40 ${
               mobileView === 'editor' ? 'hidden lg:block' : 'block'
             }`}
           >
-            <div className="bg-slate-200/60 rounded-2xl p-3 sm:p-4 border border-slate-300/80 shadow-inner">
-              <div className="flex items-center justify-between pb-3 px-2 text-xs font-semibold text-slate-600">
+            <div className="bg-[#ede9fe]/40 rounded-3xl p-3 sm:p-4 border border-purple-200/60 shadow-inner">
+              <div className="flex items-center justify-between pb-3 px-2 text-xs font-bold text-slate-700">
                 <span className="flex items-center gap-1.5">
                   <Eye className="w-4 h-4 text-brand-600" />
                   Live A4 Document Preview
                 </span>
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-500 font-medium">
                   Updates in real time
                 </span>
               </div>
 
-              {/* Scrollable Container with standard A4 paper presentation */}
-              <div className="max-h-[80vh] overflow-y-auto rounded-xl">
+              <div className="max-h-[78vh] overflow-y-auto rounded-2xl">
                 <ResumePreview resumeData={resumeData} />
               </div>
             </div>
@@ -490,4 +476,3 @@ const ResumeEditorPage = () => {
 };
 
 export default ResumeEditorPage;
-
