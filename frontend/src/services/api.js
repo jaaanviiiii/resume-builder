@@ -1,7 +1,7 @@
 // API Service for communicating with the Express backend (Experiment 9)
 // Uses standard fetch() with async/await and JSON handling
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 // Helper function to get the stored JWT token
 const getAuthHeaders = () => {

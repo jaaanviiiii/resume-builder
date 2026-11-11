@@ -1,17 +1,25 @@
 {
   "name": "resumebuilder-fullstack",
   "version": "1.0.0",
-  "description": "ResumeForge Full-Stack MERN Resume Builder",
+  "description": "ResumeForge Full-Stack MERN Resume Builder for Vercel Deployment",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
-    "start": "cd backend && npm start",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
+    "build": "cd frontend && npm install && npm run build",
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.4"
   },
   "keywords": [
     "mern",
     "resume-builder",
     "react",
-    "express"
+    "express",
+    "vercel"
   ],
   "author": "Janvi Soni",
   "license": "ISC"

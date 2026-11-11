@@ -79,10 +79,14 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`===============================================`);
-  console.log(`ResumeForge Full-Stack Server running on port ${PORT}`);
-  console.log(`App URL: http://localhost:${PORT}`);
-  console.log(`API URL: http://localhost:${PORT}/api`);
-  console.log(`===============================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(`ResumeForge Full-Stack Server running on port ${PORT}`);
+    console.log(`App URL: http://localhost:${PORT}`);
+    console.log(`API URL: http://localhost:${PORT}/api`);
+    console.log(`===============================================`);
+  });
+}
+
+module.exports = app;
