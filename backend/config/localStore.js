@@ -1,8 +1,13 @@
 // Local JSON fallback store when MongoDB is not running locally (dev convenience)
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
-const dataDir = path.join(__dirname, '..', 'data');
+// On serverless platforms (like Vercel), only /tmp is writable
+const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const dataDir = isServerless
+  ? path.join(os.tmpdir(), 'resumeforge-data')
+  : path.join(__dirname, '..', 'data');
 const dbFile = path.join(dataDir, 'db.json');
 
 // Ensure data directory and file exist

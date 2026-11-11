@@ -11,10 +11,7 @@ const connectDB = async () => {
   } catch (error) {
     console.warn(`[MongoDB Warning] Could not connect to database at ${uri}`);
     console.warn(`Reason: ${error.message}`);
-    console.warn(`Note: Ensure MongoDB is running locally or set MONGODB_URI to your MongoDB Atlas connection string in .env`);
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    console.warn(`Note: Using fallback storage or configure MONGODB_URI in environment variables.`);
   }
 };
 

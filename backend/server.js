@@ -26,6 +26,9 @@ app.use(logger);
 // Mount API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/resumes', resumeRoutes);
+// Also support route aliases in case of serverless rewrite stripping
+app.use('/auth', authRoutes);
+app.use('/resumes', resumeRoutes);
 
 // API Health Check Route
 app.get('/api', (req, res) => {
