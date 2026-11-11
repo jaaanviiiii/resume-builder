@@ -4,7 +4,7 @@
 
 *Submitted by*
 
-**Ankit Kumar ([YOUR_UID_HERE])**
+**Janvi Soni ([YOUR_UID_HERE])**
 
 *in partial fulfillment for the award of the degree of*
 
@@ -21,7 +21,7 @@
 
 ## BONAFIDE CERTIFICATE
 
-Certified that this project report **"AI-POWERED MERN RESUME BUILDER"** is the bonafide work of **Ankit Kumar ([YOUR_UID_HERE])** who carried out the project work under my supervision.
+Certified that this project report **"AI-POWERED MERN RESUME BUILDER"** is the bonafide work of **Janvi Soni ([YOUR_UID_HERE])** who carried out the project work under my supervision.
 
 **SIGNATURE**  
 **[SUPERVISOR_NAME_HERE]**  
