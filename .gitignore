@@ -2,6 +2,10 @@
 node_modules
 */node_modules
 
+# Local database runtime files
+backend/data
+backend/data/*
+
 # Environment variables
 .env
 .env.local
