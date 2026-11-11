@@ -78,9 +78,10 @@ This project was built to directly cover and defend the concepts prescribed in t
   - MongoDB Atlas (Cloud Database) / Local MongoDB
 
 - **Deployment**:
-  - Frontend: **Vercel**
-  - Backend: **Render**
+  - Full-Stack (Frontend + Express API Serverless Functions): **Vercel**
   - Database: **MongoDB Atlas**
+  - **Live URL**: [https://resume-builder-janvi-0e3d.vercel.app](https://resume-builder-janvi-0e3d.vercel.app)
+  - **GitHub Repository**: [https://github.com/jaaanviiiii/resume-builder](https://github.com/jaaanviiiii/resume-builder)
 
 ---
 
